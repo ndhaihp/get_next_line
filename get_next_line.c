@@ -12,27 +12,44 @@
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+char	*scoop_data(int fd)
 {
 	ssize_t		byte_read;
 	static char *buffer;
-	char		*line;
-	size_t		i;
-	size_t		size;
+	char		*chunk;
+	char		*temp;
 
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);	
-	byte_read = read(fd, buffer, BUFFER_SIZE);
-	i = 0;
-	while (byte_read > 0)
+	chunk = malloc(BUFFER_SIZE + 1);
+	if (!chunk)
+		return (NULL);
+	byte_read = 1;
+	while (byte_read > 0 && ft_strchr(chunk, '\n') == NULL)
 	{
-		while (i < BUFFER_SIZE && buffer[i] != '\n')
-			i++;
-		line = malloc(i + 1);
-		if (!line)
+		byte_read = read(fd, chunk, BUFFER_SIZE);
+		if (byte_read <= 0)
 			return (NULL);
-		
-		buffer[byte_read] = '\0';
+		chunk[byte_read] = '\0';
+		temp = buffer;
+		buffer = ft_strjoin(temp, chunk);
+		free(temp);
 	}
+	return(buffer);
+}
+
+char	*extract_line(char *buffer, size_t *tail)
+{
+	char	*line;
+	size_t	i;
+
+	i = 0;
+	while (buffer[i] != '\n' || buffer[i] != '\0')
+		i++;
+	line = ft_strndup(buffer, i + 1);
+	*tail = ft_strlen(buffer) - i;
+	return(line);
+}
+
+char	*get_next_line
+{
+
 }
