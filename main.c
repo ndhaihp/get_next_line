@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h       	 				 		    :+:      :+:    :+:   */
+/*   get_next_line.c    	       	 		 		    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dainguye <dainguye@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/16 10:57:58 by dainguye          #+#    #+#             */
-/*   Updated: 2025/11/16 10:57:58 by dainguye         ###   ########.fr       */
+/*   Created: 2025/11/11 10:57:58 by dainguye          #+#    #+#             */
+/*   Updated: 2025/11/11 10:57:58 by dainguye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
 
-# include <stdlib.h>
-# include <unistd.h>
+int	main(void)
+{
+	int		fd;
+	char	*line;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-size_t	ft_strlen(const char *s);
-
-#endif
+	fd = open("file1.txt", O_RDONLY);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		printf("[%s]", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (0);
+}
